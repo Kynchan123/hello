@@ -1,0 +1,38 @@
+body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 300px;
+      position: relative;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .yes {
+      background-color: #ff4d88;
+      color: white;
+    }
+    .no {
+      background-color: #ccc;
+      position: absolute;
+    }
+    #cuteImg {
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
