@@ -1,66 +1,97 @@
 body {
-      font-family: Arial, sans-serif;
-      background: #ffe6f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-        overflow: hidden;
-    }
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      width: 300px;
-      position: relative;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 10px;
-    }
-    .yes {
-      background-color: #ff4d88;
-      color: white;
-    }
-    .no {
-      background-color: #ccc;
-      position: absolute;
-    }
-    #cuteImg {
-  margin-bottom: 20px;
-  border-radius: 12px;
+  font-family: Arial, sans-serif;
+  background: #ffe6f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+  overflow: hidden;
+  transition: background 0.6s ease;
 }
-input {
-  padding: 10px;
+
+.container {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 300px;
+  position: relative;
+  z-index: 10;
+}
+
+button {
+  padding: 10px 20px;
   font-size: 16px;
+  border: none;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-  width: 80%;
+  cursor: pointer;
+  margin: 10px;
 }
+
+.yes { background-color: #ff4d88; color: white; }
+.no { background-color: #ccc; position: absolute; }
+
+#cuteImg { margin-bottom: 20px; border-radius: 12px; }
+
+/* ================= Hearts ================= */
 .heart {
   position: fixed;
   bottom: 0;
   font-size: 30px;
   animation: rise 4s linear forwards;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 20;
 }
 
 @keyframes rise {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-120vh);
-    opacity: 0;
-  }
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* ================= Flowers ================= */
+.flower {
+  position: fixed;
+  top: -40px;
+  font-size: 28px;
+  animation: fall linear forwards;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.9;
+}
+
+@keyframes fall {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* ================= Valentine Building ================= */
+.valentine-bg {
+  position: fixed;
+  bottom: 0; /* start at bottom */
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  width: 100%;
+  height: 100%;
+  background: url("images/valentines-bg.jpeg") no-repeat center bottom;
+  background-size: contain;
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 3s ease, opacity 3s ease;
+}
+
+.valentine-bg.show {
+  transform: translateX(-50%) scaleY(1);
+  opacity: 1;
+}
+
+/* ================= Name Input ================= */
+input#nameInput {
+  padding: 8px;
+  width: 80%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }

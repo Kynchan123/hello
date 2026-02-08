@@ -9,112 +9,132 @@
 
 <body>
   <div class="container" id="box">
-    <img id="cuteImg" src="images/hello.gif" width="200" />
-    <h2 id="text">Hi there! 💕</h2>
-
-    <div id="buttons">
-      <button onclick="askName()">Hello!</button>
-    </div>
-
-    <audio id="valentineMusic">
-      <source src="her.mp3" type="audio/mpeg">
-    </audio>
+  <img id="cuteImg" src="images/hello.gif" width="200" />
+  <h2 id="text">Hi there! 💕</h2>
+  <div id="buttons">
+    <button onclick="askName()">Hello!</button>
   </div>
 
+  <audio id="valentineMusic">
+    <source src="her.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
 <script>
-  let userName = "";
+let userName = "";
+const text = document.getElementById("text");
+const buttons = document.getElementById("buttons");
+const box = document.getElementById("box");
+const img = document.getElementById("cuteImg");
 
-  const text = document.getElementById("text");
-  const buttons = document.getElementById("buttons");
-  const box = document.getElementById("box");
-  const img = document.getElementById("cuteImg");
+/* ================= STEP 1: Ask Name ================= */
+function askName() {
+  img.src = "images/hello.gif";
+  text.innerText = "What’s your name? 💌";
+  buttons.innerHTML = `
+    <input type="text" id="nameInput" placeholder="Enter your name..." />
+    <br>
+    <button type="button" onclick="saveName()">Continue 💕</button>
+  `;
+  document.getElementById("nameInput").focus();
+}
 
-  // STEP 1: Ask for name
-  function askName() {
-    img.src = "images/hello.gif";
-    text.innerText = "What’s your name? 💌";
-    buttons.innerHTML = `
-      <input type="text" id="nameInput" placeholder="Enter your name..." />
-      <br>
-      <button type="button" onclick="saveName()">Continue 💕</button>
-    `;
+/* ================= STEP 2: Save Name ================= */
+function saveName() {
+  const input = document.getElementById("nameInput");
+  userName = input.value.trim();
+  if (userName === "") { alert("Heyyy 😳 tell me your name!"); return; }
+  nextStep();
+}
 
-    document.getElementById("nameInput").focus();
+/* ================= STEP 3: Important Question ================= */
+function nextStep() {
+  img.src = "images/hmm.gif";
+  text.innerText = `Okay ${userName}… I have an important question 😳`;
+  buttons.innerHTML = `<button onclick="askValentine()">Okay 💕</button>`;
+}
+
+/* ================= STEP 4: Valentine Question ================= */
+function askValentine() {
+  img.src = "images/cat.gif";
+  text.innerText = `Will you be my Valentine, ${userName}? 💖`;
+  buttons.innerHTML = `
+    <button class="yes" onclick="yesAnswer()">Yes 💘</button>
+    <button class="no" id="noBtn">No 😅</button>
+  `;
+
+  const noBtn = document.getElementById("noBtn");
+  noBtn.addEventListener("mouseover", () => {
+    const boxRect = box.getBoundingClientRect();
+    const x = Math.random() * (boxRect.width - noBtn.offsetWidth);
+    const y = Math.random() * (boxRect.height - noBtn.offsetHeight);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  });
+}
+
+/* ================= Hearts ================= */
+function spawnHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
+}
+
+/* ================= Flowers ================= */
+function spawnFlower() {
+  const flowers = ["🌸","🌼","🌷","🌺","💐"];
+  const flower = document.createElement("div");
+  flower.className = "flower";
+  flower.innerText = flowers[Math.floor(Math.random()*flowers.length)];
+  flower.style.left = Math.random()*100+"vw";
+  flower.style.animationDuration = (6+Math.random()*4)+"s";
+  flower.style.fontSize = (20+Math.random()*20)+"px";
+  document.body.appendChild(flower);
+  setTimeout(()=>flower.remove(),9000);
+}
+
+/* ================= Build Valentine Background ================= */
+function buildBackground() {
+  if (!document.querySelector(".valentine-bg")) {
+    let building = document.createElement("div");
+    building.className = "valentine-bg";
+    document.body.appendChild(building);
+    setTimeout(()=>{ building.classList.add("show"); },50);
   }
+}
 
-  // STEP 2: Save name
-  function saveName() {
-    const input = document.getElementById("nameInput");
-    userName = input.value.trim();
+/* ================= STEP 5: YES ================= */
+function yesAnswer() {
+  img.src = "images/IMG_1561.JPG";
+  text.innerText = `YAY!! 💕🥰 Happy Valentine’s Day, ${userName}!`;
+  buttons.innerHTML = "";
 
-    if (userName === "") {
-      alert("Heyyy 😳 tell me your name!");
-      return;
-    }
+  // 1️⃣ Build the flower building
+  buildBackground();
 
-    nextStep();
-  }
+  // 2️⃣ Play music
+  const music = document.getElementById("valentineMusic");
+  music.volume = 0.7;
+  music.play();
 
-  // STEP 3: Important question
-  function nextStep() {
-    img.src = "images/hmm.gif";
-    text.innerText = `Okay ${userName}… I have an important question 😳`;
-    buttons.innerHTML = `<button onclick="askValentine()">Okay 💕</button>`;
-  }
+  // 3️⃣ Spawn hearts
+  const heartInterval = setInterval(spawnHeart,150);
+  setTimeout(()=>clearInterval(heartInterval),4000);
 
-  // STEP 4: Valentine question
-  function askValentine() {
-    img.src = "images/cat.gif";
-    text.innerText = `Will you be my Valentine, ${userName}? 💖`;
-    buttons.innerHTML = `
-      <button class="yes" onclick="yesAnswer()">Yes 💘</button>
-      <button class="no" id="noBtn">No 😅</button>
-    `;
+  // 4️⃣ Spawn flowers
+  const flowerInterval = setInterval(spawnFlower,300);
+  setTimeout(()=>clearInterval(flowerInterval),6000);
 
-    const noBtn = document.getElementById("noBtn");
-
-    noBtn.addEventListener("mouseover", () => {
-      const boxRect = box.getBoundingClientRect();
-      const x = Math.random() * (boxRect.width - noBtn.offsetWidth);
-      const y = Math.random() * (boxRect.height - noBtn.offsetHeight);
-
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    });
-  }
-
-  // HEART SPAWNER
-  function spawnHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
-  }
-
-  // STEP 5: YES 💖
-  function yesAnswer() {
-    img.src = "images/IMG_1561.JPG";
-    text.innerText = `YAY!! 💕🥰 Happy Valentine’s Day, ${userName}!`;
-    buttons.innerHTML = "";
-
-    const music = document.getElementById("valentineMusic");
-    music.volume = 0.7;
-    music.play();
-
-    const heartInterval = setInterval(spawnHeart, 150);
-    setTimeout(() => clearInterval(heartInterval), 4000);
-
-    // Discord notification
-    fetch("https://discord.com/api/webhooks/1469876462894055529/woDuIbAe11VWb-K-T0dt07yUL0bpdl7CHWjZqHK7FeKlLIsNi7ZiagzC3RG3dj4DbMZu", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        content: `💖 ${userName} said YES to being your Valentine!`
-      })
-    });
-  }
+  // 5️⃣ Send notification (Discord example)
+  fetch("https://discord.com/api/webhooks/1469876462894055529/woDuIbAe11VWb-K-T0dt07yUL0bpdl7CHWjZqHK7FeKlLIsNi7ZiagzC3RG3dj4DbMZu", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({content:`💖 ${userName} said YES to being your Valentine!`})
+  });
+}
 </script>
 
 </body>
