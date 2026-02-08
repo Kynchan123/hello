@@ -1,69 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello?</title>
-     <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hello?</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="container" id="box">
+  <div class="container" id="box">
+    <img id="cuteImg" src="images/hello.gif" width="200" />
+    <h2 id="text">Hi there! 💕</h2>
 
-  <img id="cuteImg" src="images/hello.gif" width="200" />
+    <div id="buttons">
+      <button onclick="askName()">Hello!</button>
+    </div>
 
-  <h2 id="text">Hi there! 💕</h2>
-  <div id="buttons">
-    <button onclick="nextStep()">Hello!</button>
+    <audio id="valentineMusic">
+      <source src="her.mp3" type="audio/mpeg">
+    </audio>
   </div>
-  <audio id="valentineMusic">
-  <source src="her.mp3" type="audio/mpeg">
-</audio>
 
-</div>
-  
-  <script>
-    const text = document.getElementById("text");
-    const buttons = document.getElementById("buttons");
-    const box = document.getElementById("box");
-    const img = document.getElementById("cuteImg");
+<script>
+  let userName = "";
 
-    function nextStep() {
-        img.src = "images/hmm.gif";
-      text.innerText = "I have an important question...";
-      buttons.innerHTML = `<button onclick="askValentine()">Okay 😳</button>`;
+  const text = document.getElementById("text");
+  const buttons = document.getElementById("buttons");
+  const box = document.getElementById("box");
+  const img = document.getElementById("cuteImg");
+
+  // STEP 1: Ask for name
+  function askName() {
+    img.src = "images/hello.gif";
+    text.innerText = "What’s your name? 💌";
+    buttons.innerHTML = `
+      <input type="text" id="nameInput" placeholder="Enter your name..." />
+      <br>
+      <button type="button" onclick="saveName()">Continue 💕</button>
+    `;
+
+    document.getElementById("nameInput").focus();
+  }
+
+  // STEP 2: Save name
+  function saveName() {
+    const input = document.getElementById("nameInput");
+    userName = input.value.trim();
+
+    if (userName === "") {
+      alert("Heyyy 😳 tell me your name!");
+      return;
     }
 
-    function askValentine() {
-        img.src = "images/cat.gif"
-      text.innerText = "Will you be my Valentine? 💖";
-      buttons.innerHTML = `
-        <button class="yes" onclick="yesAnswer()">Yes 💘</button>
-        <button class="no" id="noBtn">No 😅</button>
-      `;
+    nextStep();
+  }
 
-      const noBtn = document.getElementById("noBtn");
+  // STEP 3: Important question
+  function nextStep() {
+    img.src = "images/hmm.gif";
+    text.innerText = `Okay ${userName}… I have an important question 😳`;
+    buttons.innerHTML = `<button onclick="askValentine()">Okay 💕</button>`;
+  }
 
-      noBtn.addEventListener("mouseover", () => {
-        const boxRect = box.getBoundingClientRect();
-        const x = Math.random() * (boxRect.width - noBtn.offsetWidth);
-        const y = Math.random() * (boxRect.height - noBtn.offsetHeight);
+  // STEP 4: Valentine question
+  function askValentine() {
+    img.src = "images/cat.gif";
+    text.innerText = `Will you be my Valentine, ${userName}? 💖`;
+    buttons.innerHTML = `
+      <button class="yes" onclick="yesAnswer()">Yes 💘</button>
+      <button class="no" id="noBtn">No 😅</button>
+    `;
 
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-      });
-    }
+    const noBtn = document.getElementById("noBtn");
 
-    function yesAnswer() {
-        img.src = "images/IMG_1561.JPG"
+    noBtn.addEventListener("mouseover", () => {
+      const boxRect = box.getBoundingClientRect();
+      const x = Math.random() * (boxRect.width - noBtn.offsetWidth);
+      const y = Math.random() * (boxRect.height - noBtn.offsetHeight);
 
-      text.innerText = "YAY!! 💕🥰 Happy Valentine’s Day!";
-      buttons.innerHTML = "";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+  }
 
-      const music = document.getElementById("valentineMusic");
-  music.volume = 0.7; // optional
-  music.play()
-    }
-  </script>
+  // HEART SPAWNER
+  function spawnHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }
+
+  // STEP 5: YES 💖
+  function yesAnswer() {
+    img.src = "images/IMG_1561.JPG";
+    text.innerText = `YAY!! 💕🥰 Happy Valentine’s Day, ${userName}!`;
+    buttons.innerHTML = "";
+
+    const music = document.getElementById("valentineMusic");
+    music.volume = 0.7;
+    music.play();
+
+    const heartInterval = setInterval(spawnHeart, 150);
+    setTimeout(() => clearInterval(heartInterval), 4000);
+
+    // Discord notification
+    fetch("https://discord.com/api/webhooks/1469876462894055529/woDuIbAe11VWb-K-T0dt07yUL0bpdl7CHWjZqHK7FeKlLIsNi7ZiagzC3RG3dj4DbMZu", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: `💖 ${userName} said YES to being your Valentine!`
+      })
+    });
+  }
+</script>
 
 </body>
 </html>

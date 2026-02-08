@@ -7,6 +7,7 @@ body {
       height: 100vh;
       margin: 0;
       text-align: center;
+        overflow: hidden;
     }
     .container {
       background: white;
@@ -35,4 +36,31 @@ body {
     #cuteImg {
   margin-bottom: 20px;
   border-radius: 12px;
+}
+input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  width: 80%;
+}
+.heart {
+  position: fixed;
+  bottom: 0;
+  font-size: 30px;
+  animation: rise 4s linear forwards;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
 }
